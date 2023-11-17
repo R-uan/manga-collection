@@ -1,0 +1,26 @@
+@import url("https://fonts.googleapis.com/css2?family=Roboto:wght@100;300;400;700&display=swap");
+@tailwind base;
+@tailwind utilities;
+@tailwind components;
+
+body {
+    display: flex;
+    justify-content: center;
+    background-color: #15181d;
+    color: rgb(223, 223, 223);
+}
+
+input {
+    border: 0;
+    outline: 0;
+}
+input:focus {
+    outline: none !important;
+}
+::-webkit-scrollbar {
+    display: none;
+}
+
+#caralho {
+    outline: 2px solid red;
+}
