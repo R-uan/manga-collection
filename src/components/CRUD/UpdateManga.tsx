@@ -51,7 +51,7 @@ export default function UpdateButton() {
     async function onSubmit(event: React.FormEvent<HTMLFormElement>) {
         event.preventDefault();
         const form = event.currentTarget;
-        const id = form.id.value
+        const id = form.dId.value
         const formData = {
             info: {
                 title: form._title.value,
@@ -69,7 +69,7 @@ export default function UpdateButton() {
                 url: form.url.value,
             },
         };
-
+        console.log(id)
         updateManga(id, formData)
         setEditStatus(false)
         setExpandedData(null);
@@ -124,7 +124,7 @@ export default function UpdateButton() {
                             <label htmlFor="">Year:&nbsp;</label>
                             <input className={selectStyle} id="year" type="number" autoComplete="off" value={year} onChange={(e) => setYear(parseInt(e.target.value))}/>
                         </div>
-                        <input id="id" name="id" type="hidden" value={id} /* readOnly={true} */ />
+                        <input id="dId" name="dId" type="hidden" value={id} /* readOnly={true} */ />
                     <div>
                         <button className={buttonStyle} type="submit" > SAVE </button>
                         <button className={buttonStyle} type="button" onClick={() => { setEditStatus(false) }}> CLOSE </button>
