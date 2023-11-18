@@ -4,12 +4,25 @@ import MangaCover from "./MangaCover";
 import MangaInfo from "./MangaInfo";
 import UpdateButton from "./CRUD/UpdateManga";
 import gif from "../assets/ezgif.com-gif-maker_3.gif"
+import github from "../assets/github.png";
 
 export default function ExpandedManga() {
     const { expandedData } = useExpandMangaContext();
     if(!expandedData) return (
-        <div className=" bg-[#0f1114] w-[710px] h-[414px] m-2 flex flex-col content-center rounded-xl static flex-wrap justify-center items-middle">
+        <div className=" bg-[#0f1114] w-[710px] h-[414px] m-2 flex flex-col content-center rounded-xl flex-wrap justify-center items-middle relative">
+            <a href="https://github.com/R-uan/manga-collection" target="_blank">
             <img src={gif} alt="" className="w-36 h-36" />
+            </a>
+            <div className="absolute bottom-2 left-3 flex">
+                <span className="text-[#1d2128] inline">
+                    Created/Developed by: Ruan
+                </span>
+                <span>
+                    <a href="https://github.com/R-uan/manga-collection" target="_blank">
+                    <img className="w-5 h-5 ml-2 inline opacity-50 mb-0 top-0" src={github} alt="" />
+                    </a>
+                </span>
+            </div>
         </div>
     ); 
     return(

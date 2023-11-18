@@ -6,10 +6,12 @@ import { useExpandMangaContext } from "../context/ExpandedMangaProvider";
 export default function UpdateButton() { 
     const { expandedData, setExpandedData } = useExpandMangaContext();
     const reload = useReloadContext();
+
     const [editStatus, setEditStatus] = useState(false);
     let info = { title: "null", author:"null", synopse:"null", type:"null", status:"null", year:1999, genre: ["null"] }
     let link = { cover: "null", url: "null" }
     let id = "null";
+    
     if(expandedData){
         info = expandedData.info;
         link = expandedData.link;

@@ -1,13 +1,39 @@
 import { useState } from "react";
 import { postManga } from "../../scripts/helpers/manga-requests"
+import { useReloadContext } from "../context/ReloadProvider";
 
 export default function AddNewManga() {
     const [newManga, setNewMangaStatus] = useState(false);
+    const reload = useReloadContext();
     
     const inputStyle = "bg-[#0f1114] rounded mb-4 pl-1 h-6"
     const divStyle = "mb-3 w-11/12 flex flex-col"
     const selectStyle = "bg-[#0f1114] w-36 mr-3 h-6"
     const buttonStyle = "bg-[#0f1114] hover:bg-[#1b1c20] mt-10 ml-5 p-3 pt-1 pb-1 rounded"
+
+    async function onSubmit(event: React.FormEvent<HTMLFormElement>) {
+        event.preventDefault();
+        const form = event.currentTarget;
+        const data = {
+            title: form._title.value,
+            author: form.author.value,
+            type: form.type.value,
+            year: form.year.value,
+            status: form.status.value,
+            genre: form.genre.value.split(",").map((x: string) => {
+                return x.trim();
+            }),
+            synopse: form.synopse.value,
+            cover: form.cover.value,
+            url: form.url.value,
+        };
+        postManga(data)
+        setNewMangaStatus(false)
+        setTimeout(() => {
+            reload!.reloadStatus == 0 ? reload!.setReloadStatus(1) : reload!.setReloadStatus(0); 
+        }, 500);
+    }
+
     if(newManga) {
         return (
             <>
@@ -18,7 +44,7 @@ export default function AddNewManga() {
 
             <div className="absolute z-50 flex justify-center items-center top-0 right-0 left-0 bottom-0 w-full h-full bg-[#00000070]">
                 <div onClick={(event) => event.stopPropagation()} className="bg-[#15181d] rounded-lg">
-                    <form className="flex flex-col p-5 items-center" action="POST" onSubmit={(e) => { postManga(e, setNewMangaStatus)}}>
+                    <form className="flex flex-col p-5 items-center" action="POST" onSubmit={(e) => { onSubmit(e) }}>
                         <div className={divStyle}>
                             <label htmlFor="title">Title:</label>
                             <input className={inputStyle} id="_title" type="text" autoComplete="off"/>
