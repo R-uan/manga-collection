@@ -1,6 +1,6 @@
 # Manga Collection  
 
-<p>Simple User Interface for CRUD operations using a express based <a src="https://github.com/R-uan/manga-collection-api">REST API</a></p>
+Simple User Interface for CRUD operations using a express based [REST API](https://github.com/R-uan/manga-collection-api)
 <h3>Functionalities</h3>
 <ul> 
    <li>Add New Mangas</li>
