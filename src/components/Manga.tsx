@@ -2,12 +2,12 @@ import IManga from "../scripts/interfaces/IManga";
 import { useExpandMangaContext } from "./context/ExpandedMangaProvider";
 
 export default function Manga({ Manga } : { Manga: IManga }) {
-    let { title, author, status, genre } = Manga.info;
+    let { title, author, status, genre } = Manga;
     const { setExpandedData } = useExpandMangaContext()
 
-
-    title.length > 30 ? title = title.slice(0, 31) + "..." : null;
-    author.length > 30 ? author = author.slice(0, 31) + "..." : null;
+    title?.length > 30 ? title = title.slice(0, 31) + "..." : null;
+    author?.length > 30 ? author = author.slice(0, 31) + "..." : null;
+    
     return (
         <div className="w-[528px] bg-[#0f1114] p-2 mr-0 mt-2 flex flex-row rounded-md items-center relative hover:cursor-pointer hover:bg-[#0b0d0f]">
             <div className="w-[370px] ml-3 mr-1">

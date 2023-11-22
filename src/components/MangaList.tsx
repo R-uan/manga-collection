@@ -2,28 +2,32 @@ import Manga from "./Manga";
 import IManga from "../scripts/interfaces/IManga";
 import Search from "./Search";
 import AddNewManga from "./CRUD/AddNewManga";
-import { getMangas } from "../scripts/helpers/manga-requests";
-import { searchManga } from "../scripts/helpers/manga-requests"
+import { MangaRequests } from "../scripts/Requests";
 import { useReloadContext } from "./context/ReloadProvider";
 import { useEffect, useState } from "react";
 
 export default function MangaList(){
-    const [mangaList, setMangaList] = useState<IManga[] | null>();
+    const [mangaList, setMangaList] = useState<IManga[] | null>(null);
+    const [responseMessage, setResponseMessage] = useState("");
     const reload = useReloadContext()?.reloadStatus;
 
     useEffect(() => { 
-        async function fetchAll() {
-            const mangas: [] = await getMangas();
-            if(mangas.length > 0){ setMangaList(mangas) }
-            else console.log(mangas)
+        async function fetch() { 
+            try {
+                const response = await MangaRequests.FetchAll();
+                if(response.length > 0) setMangaList(response);
+                else setResponseMessage("Nothing Found");
+            } catch (error) { setResponseMessage(`${error}`) } 
         }
-        fetchAll();
+        fetch()
     }, [reload])
 
     async function fetchMangas(data: { option: string, input: string }) { 
-        const mangas: [] = await searchManga(data);
-        if(mangas != null && mangas.length > 0) { setMangaList(mangas) }
-        else setMangaList(null);
+        try {
+            const mangas: [] = await MangaRequests.SearchManga(data);
+            if(mangas.length > 0) setMangaList(mangas);
+            else setMangaList(null);
+        } catch (error: any) { setMangaList(null); setResponseMessage(error) }
     }
 
     return(
@@ -39,7 +43,7 @@ export default function MangaList(){
                     })) 
                     : 
                     (<div className="w-[528px] bg-[#0f1114] p-2 mr-0 mt-2 flex flex-row justify-center rounded-md items-center relative">
-                        <h1>Nothing Found</h1>
+                        <h1>{responseMessage}</h1>
                     </div>)
                 }
                 </div>

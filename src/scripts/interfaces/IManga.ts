@@ -1,23 +1,14 @@
-export default interface Manga {
+export default interface IManga {
     _id: string;
-    info: {
-        title: string;
-        author: string;
-        type: string;
-        year: number;
-        status: string;
-        genre: string[];
-        synopse: string;
-    };
-    link: {
-        cover: string;
-        url: string;
-    };
-    stats: {
-        views: number;
-        reading: number;
-        planning: number;
-        dropped: number;
-        completed: number;
-    };
+
+    title: string;
+    author: string;
+    type: string;
+    year: number;
+    status: string;
+    genre: string[];
+    synopse: string;
+
+    cover: string;
+    url: string;
 }

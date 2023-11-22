@@ -1,9 +1,10 @@
 import { useState } from "react";
-import { postManga } from "../../scripts/helpers/manga-requests"
+import { MangaRequests } from "../../scripts/Requests";
 import { useReloadContext } from "../context/ReloadProvider";
 
 export default function AddNewManga() {
     const [newManga, setNewMangaStatus] = useState(false);
+    const [warning, setWarning] = useState("");
     const reload = useReloadContext();
     
     const inputStyle = "bg-[#0f1114] rounded mb-4 pl-1 h-6"
@@ -13,27 +14,31 @@ export default function AddNewManga() {
 
     async function onSubmit(event: React.FormEvent<HTMLFormElement>) {
         event.preventDefault();
-        const form = event.currentTarget;
-        const data = {
-            title: form._title.value,
-            author: form.author.value,
-            type: form.type.value,
-            year: form.year.value,
-            status: form.status.value,
-            genre: form.genre.value.split(",").map((x: string) => {
+        try {
+            const form = event.currentTarget;
+            const genre = form.genre.value.split(",").map((x: string) => {
                 return x.trim();
-            }),
-            synopse: form.synopse.value,
-            cover: form.cover.value,
-            url: form.url.value,
-        };
-        postManga(data)
-        setNewMangaStatus(false)
-        setTimeout(() => {
-            reload!.reloadStatus == 0 ? reload!.setReloadStatus(1) : reload!.setReloadStatus(0); 
-        }, 500);
+            })
+            const data = {
+                title: form._title.value ? form._title.value : null,
+                author: form.author.value ? form.author.value : null,
+                type: form.type.value ? form.type.value : "Manga",
+                year: form.year.value ? form.year.value : null,
+                status: form.status.value ? form.status.value : "Ongoing",
+                genre: genre ? genre : ["none"],
+                synopse: form.synopse.value ? form.synopse.value : "No synopse found",
+                cover: form.cover.value ? form.cover.value : "None",
+                url: form.url.value ? form.url.value : "None",
+            };
+            await MangaRequests.PostManga(data)
+            setNewMangaStatus(false)
+            setWarning("");
+        } catch (error: any) {
+            console.log(error)
+            setWarning(error)
+        }
+        setTimeout(() => reload!.reloadStatus == 0 ? reload!.setReloadStatus(1) : reload!.setReloadStatus(0), 500);
     }
-
     if(newManga) {
         return (
             <>
@@ -43,14 +48,19 @@ export default function AddNewManga() {
             </div>
 
             <div className="absolute z-50 flex justify-center items-center top-0 right-0 left-0 bottom-0 w-full h-full bg-[#00000070]">
+                {warning ? (
+                <div className="absolute top-0 bg-[#ff3333] h-8 w-full justify-center flex items-center">
+                    <h1>{warning}</h1>
+                </div>
+                ) : null}
                 <div onClick={(event) => event.stopPropagation()} className="bg-[#15181d] rounded-lg">
                     <form className="flex flex-col p-5 items-center" action="POST" onSubmit={(e) => { onSubmit(e) }}>
                         <div className={divStyle}>
                             <label htmlFor="title">Title:</label>
-                            <input className={inputStyle} id="_title" type="text" autoComplete="off"/>
+                            <input className={inputStyle} id="_title" type="text" autoComplete="off" required/>
                             
                             <label htmlFor="author">Author: </label>
-                            <input className={inputStyle} id="author" type="text" autoComplete="off"/>
+                            <input className={inputStyle} id="author" type="text" autoComplete="off" required/>
                         
                             <label htmlFor="genre">Genres: </label>
                             <input className={inputStyle} id="genre" type="text" autoComplete="off"/>
@@ -81,7 +91,7 @@ export default function AddNewManga() {
                             </select>
 
                             <label htmlFor="">Year:&nbsp;</label>
-                            <input className={selectStyle} id="year" type="number" autoComplete="off"/>
+                            <input className={selectStyle} id="year" type="number" autoComplete="off" required/>
                         </div>
                         <div>
                             <button className={buttonStyle} type="submit" > SAVE </button>

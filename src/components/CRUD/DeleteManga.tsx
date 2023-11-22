@@ -1,7 +1,7 @@
 import { useState } from "react";
-import { deleteManga } from "../../scripts/helpers/manga-requests";
-import { useExpandMangaContext } from "../context/ExpandedMangaProvider";
 import { useReloadContext } from "../context/ReloadProvider";
+import { MangaRequests } from "../../scripts/Requests";
+import { useExpandMangaContext } from "../context/ExpandedMangaProvider";
 
 export default function DeleteButton() {
     const [deletion, setDeletion] = useState(false);
@@ -9,7 +9,7 @@ export default function DeleteButton() {
     const reload = useReloadContext();
     
     async function deleteRequest() {
-        deleteManga(expandedData!._id);
+        await MangaRequests.DeleteManga(expandedData!._id);
         setDeletion(false);
         setExpandedData(null);
         setTimeout(() => {

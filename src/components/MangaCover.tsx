@@ -8,7 +8,7 @@ export default function MangaCover() {
             <img 
             loading="lazy" 
             className="object-cover w-full h-full rounded-xl" 
-            src={expandedData.link.cover} 
+            src={expandedData.cover} 
             alt="Cover"
             />
         </div>

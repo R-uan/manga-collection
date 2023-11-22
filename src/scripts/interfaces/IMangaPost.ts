@@ -1,4 +1,4 @@
-export interface Info {
+export default interface IMangaPost {
     title: string;
     author: string;
     type: string;
@@ -6,4 +6,7 @@ export interface Info {
     status: string;
     genre: string[];
     synopse: string;
+
+    cover: string;
+    url: string;
 }

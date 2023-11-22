@@ -4,8 +4,8 @@ export default function MangaInfo() {
     const { expandedData } = useExpandMangaContext();
     if(!expandedData) return (null); 
 
-    const { title, author, type, year, status, synopse } = expandedData.info;
-    const genre = expandedData.info.genre.join(", ");
+    const { title, author, type, year, status, synopse } = expandedData;
+    const genre = expandedData.genre.join(", ");
 
     return (
         <div className="ml-2 w-[60%] h-[350px] ">

@@ -1,82 +1,67 @@
-import { updateManga } from "../../scripts/helpers/manga-requests";
-import { useReloadContext } from "../context/ReloadProvider";
 import { useEffect, useState } from "react"
+import { useReloadContext } from "../context/ReloadProvider";
+import { MangaRequests } from "../../scripts/Requests";
 import { useExpandMangaContext } from "../context/ExpandedMangaProvider";
 
 export default function UpdateButton() { 
     const { expandedData, setExpandedData } = useExpandMangaContext();
     const reload = useReloadContext();
-
     const [editStatus, setEditStatus] = useState(false);
-    let info = { title: "null", author:"null", synopse:"null", type:"null", status:"null", year:1999, genre: ["null"] }
-    let link = { cover: "null", url: "null" }
-    let id = "null";
+    let id = expandedData!._id;
+    let info = expandedData!;
     
-    if(expandedData){
-        info = expandedData.info;
-        link = expandedData.link;
-        id = expandedData._id;
-    }
-    
-    const initialGenre = info.genre.join(", ")
     const [title, setTitle]     = useState(info.title);
     const [author, setAuthor]   = useState(info.author);
-    const [genre, setGenre]     = useState(initialGenre);
+    const [genre, setGenre]     = useState(info.genre.join(", "));
     const [synopse, setSynopse] = useState(info.synopse);
     const [type, setType]       = useState(info.type);
     const [status, setStatus]   = useState(info.status);
     const [year, setYear]       = useState(info.year);
-    const [cover, setCover]     = useState(link.cover);
-    const [url, setUrl]         = useState(link.url);
+    const [cover, setCover]     = useState(info.cover);
+    const [url, setUrl]         = useState(info.url);
 
     useEffect(() => {
         if(expandedData) {
             setAuthor(info.author);
             setTitle(info.title)
-            setGenre(initialGenre)
+            setGenre(info.genre.join(", "))
             setSynopse(info.synopse)
             setType(info.type);
             setStatus(info.status)
             setYear(info.year)
-            setCover(link.cover)
-            setUrl(link.url)
+            setCover(info.cover)
+            setUrl(info.url)
         }
     }, [editStatus])
-
-    const divStyle = "mb-3 w-11/12 flex flex-col"
-    const inputStyle = "bg-[#0f1114] rounded mb-4 pl-1 h-6"
-    const selectStyle = "bg-[#0f1114] w-36 mr-3 h-6"
-    const buttonStyle = "bg-[#0f1114] hover:bg-[#1b1c20] mt-10 ml-5 p-3 pt-1 pb-1 rounded"
-
     async function onSubmit(event: React.FormEvent<HTMLFormElement>) {
         event.preventDefault();
         const form = event.currentTarget;
-        const id = form.dId.value
-        const formData = {
-            info: {
-                title: form._title.value,
-                author: form.author.value,
-                type: form.type.value,
-                year: form.year.value,
-                status: form.status.value,
-                genre: form.genre.value.split(",").map((x: string) => {
-                    return x.trim();
-                }),
-                synopse: form.synopse.value,
-            },
-            link: {
-                cover: form.cover.value,
-                url: form.url.value,
-            },
+        const id = expandedData!._id;
+        const formData = {    
+            title: form._title.value,
+            type: form.type.value,
+            year: form.year.value,
+            status: form.status.value,
+            author: form.author.value,
+            genre: form.genre.value.split(",").map((x: string) => {
+                return x.trim();
+            }),
+            synopse: form.synopse.value,
+            url: form.url.value,
+            cover: form.cover.value,            
         };
-        console.log(id)
-        updateManga(id, formData)
+        MangaRequests.UpdateManga(id, formData)
         setEditStatus(false)
         setExpandedData(null);
         setTimeout(() => {
             reload!.reloadStatus == 0 ? reload!.setReloadStatus(1) : reload!.setReloadStatus(0); 
         }, 500);
     }
+
+    const divStyle = "mb-3 w-11/12 flex flex-col"
+    const inputStyle = "bg-[#0f1114] rounded mb-4 pl-1 h-6"
+    const selectStyle = "bg-[#0f1114] w-36 mr-3 h-6"
+    const buttonStyle = "bg-[#0f1114] hover:bg-[#1b1c20] mt-10 ml-5 p-3 pt-1 pb-1 rounded"
 
     if(editStatus){
         return(
@@ -88,10 +73,10 @@ export default function UpdateButton() {
                     <form onSubmit={(event) => {onSubmit(event)}} className="flex flex-col p-5 items-center" action="POST" >
                         <div className={divStyle}>
                             <label htmlFor="title">Title:</label>
-                            <input className={inputStyle} id="_title" type="text" autoComplete="off" value={title} onChange={(e) => setTitle(e.target.value)} readOnly={false}/>
+                            <input className={inputStyle} id="_title" type="text" autoComplete="off" value={title} onChange={(e) => setTitle(e.target.value)} readOnly={false} required/>
                             
                             <label htmlFor="author">Author: </label>
-                            <input className={inputStyle} id="author" type="text" autoComplete="off" value={author} onChange={(e) => setAuthor(e.target.value)}/>
+                            <input className={inputStyle} id="author" type="text" autoComplete="off" value={author} onChange={(e) => setAuthor(e.target.value)} required/>
                         
                             <label htmlFor="genre">Genres: </label>
                             <input className={inputStyle} id="genre" type="text" autoComplete="off" value={genre} onChange={(e) => setGenre(e.target.value)}/>
@@ -122,12 +107,12 @@ export default function UpdateButton() {
                             </select>
 
                             <label htmlFor="">Year:&nbsp;</label>
-                            <input className={selectStyle} id="year" type="number" autoComplete="off" value={year} onChange={(e) => setYear(parseInt(e.target.value))}/>
+                            <input className={selectStyle} id="year" type="number" autoComplete="off" value={year} onChange={(e) => setYear(parseInt(e.target.value))} required/>
                         </div>
                         <input id="dId" name="dId" type="hidden" value={id} /* readOnly={true} */ />
                     <div>
                         <button className={buttonStyle} type="submit" > SAVE </button>
-                        <button className={buttonStyle} type="button" onClick={() => { setEditStatus(false) }}> CLOSE </button>
+                        <button className={buttonStyle} type="reset" onClick={() => { setEditStatus(false); }}>Close</button>
                     </div>
                     </form>
                 </div>
