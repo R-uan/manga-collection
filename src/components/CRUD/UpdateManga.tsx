@@ -122,6 +122,6 @@ export default function UpdateButton() {
         )
     }
     return (
-        <button onClick={() => setEditStatus(true)} className="w-6/12 text-center bg-[#525252] rounded-lg hover:bg-[#323232]">EDIT</button>
+        <button onClick={() => setEditStatus(true)} className="w-6/12 text-center rounded-lg bg-[#525252] hover:bg-[#323232]">EDIT</button>
     )
 }

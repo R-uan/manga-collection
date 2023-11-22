@@ -9,7 +9,7 @@ import github from "../assets/github.png";
 export default function ExpandedManga() {
     const { expandedData } = useExpandMangaContext();
     if(!expandedData) return (
-        <div className=" bg-[#0f1114] w-[710px] h-[414px] m-2 flex flex-col content-center rounded-xl flex-wrap justify-center items-middle relative">
+        <div className=" bg-[#0f1114] w-[710px] h-[414px] m-2 mt-3 flex flex-col content-center rounded-xl flex-wrap justify-center items-middle relative">
             <img src={gif} alt="" className="w-36 h-36" />
             <div className="absolute bottom-2 left-3 flex">
                 <span className="text-[#9a9a9a] inline">
@@ -24,7 +24,7 @@ export default function ExpandedManga() {
         </div>
     ); 
     return(
-        <div className=" bg-[#0f1114] w-[710px] h-fit m-2 flex flex-col content-center rounded-xl static">
+        <div className=" bg-[#0f1114] w-[710px] h-fit m-2 mt-3 flex flex-col content-center rounded-xl static">
             <div className="w-full h-max m-2 flex flex-row align-middle">
                 <MangaCover />
                 <MangaInfo />

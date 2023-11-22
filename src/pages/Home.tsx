@@ -5,7 +5,7 @@ import ReloadProvider from "../components/context/ReloadProvider";
 
 export default function Home() { 
     return (
-        <div className="flex flex-row">
+        <div className="flex flex-row mt-5">
             <ReloadProvider>
                 <ExpandedMangaProvider>
                     <MangaList />

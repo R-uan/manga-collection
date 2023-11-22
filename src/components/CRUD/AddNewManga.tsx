@@ -94,8 +94,8 @@ export default function AddNewManga() {
                             <input className={selectStyle} id="year" type="number" autoComplete="off" required/>
                         </div>
                         <div>
-                            <button className={buttonStyle} type="submit" > SAVE </button>
-                            <button className={buttonStyle} type="button" onClick={() => { setNewMangaStatus(false) }} > CLOSE </button>
+                            <button className={buttonStyle} type="submit" > Save </button>
+                            <button className={buttonStyle} type="button" onClick={() => { setNewMangaStatus(false) }} > Close </button>
                         </div>
                     </form>
                 </div>

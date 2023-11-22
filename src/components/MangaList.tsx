@@ -31,10 +31,10 @@ export default function MangaList(){
     }
 
     return(
-        <div className="m-2 p-1">
+        <div className="m-2 mb-0 pb-0 p-1">
             <Search searchMangas={fetchMangas} />
             <AddNewManga />
-            <div className="relative h-[665px] overflow-auto flex flex-col w-fit">
+            <div className="relative h-[656px] overflow-auto flex flex-col w-fit">
                 <div className="flex flex-col gap-1">
                     {
                     mangaList ? (mangaList.map((manga) => {

@@ -28,8 +28,8 @@ export default function DeleteButton() {
                 <div className="bg-[#15181d] flex flex-col justify-center items-center w-80 h-36 rounded-lg">
                     <h1 className="mb-6 text-2xl text-center">Confirm Deletion</h1>
                     <span>
-                        <button onClick={() => deleteRequest()} className="mr-7 bg-[#ff3131] w-[70px] h-[30px] rounded"><b>Delete</b></button>
-                        <button onClick={() => setDeletion(false)} className="bg-[#505050] ml-7 w-[70px] h-[30px] rounded">Cancel</button>
+                        <button onClick={() => deleteRequest()} className="mr-7 bg-[#a71919] hover:bg-[#7e1717] w-[70px] h-[30px] rounded"><b>Delete</b></button>
+                        <button onClick={() => setDeletion(false)} className="bg-[#525252] hover:bg-[#323232] ml-7 w-[70px] h-[30px] rounded">Cancel</button>
                     </span>
                 </div>
             </div>
