@@ -23,7 +23,3 @@ input:focus {
 ::-webkit-scrollbar {
     display: none;
 }
-
-#caralho {
-    outline: 2px solid red;
-}
